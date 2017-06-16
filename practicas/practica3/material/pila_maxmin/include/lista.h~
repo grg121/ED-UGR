@@ -1,0 +1,183 @@
+/**
+ * @file lista.h
+ * @brief Fichero cabecera del TDA Lista
+ *
+ * Gestiona una secuencia de elementos con facilidades para la insercción, 
+ * borrado y consultas desde cualquier posición .
+ */
+
+#ifndef __LISTA_H_
+#define __LISTA_H_
+
+#include <cassert>
+
+/**
+ * @brief T.D.A Lista
+ *
+ *
+ * Una instancia @e c del tipo de dato abstracto Lista sobre un dominio @e T es
+ * una sucesión finita de elementos del mismo de forma tal que dichos elementos
+ * pueden ser insertados, eliminados o consultados independientemente de la 
+ * posición que ocupen en la lista. 
+ *
+ * Una lista de longitud n la denotaremos: { a0, a1, .... , an }
+ *
+ * Si n = 0 diremos que la lista está vacía. 
+ *
+ * @author Francisco Navarro 
+ * @date 2016 ( Noviembre ) 
+ */
+
+template <class T>
+class Lista{
+ private:
+  struct Celda {
+    T elemento ;
+    Celda * siguiente ; ///< Puntero a la celda siguiente en la lista.
+    Celda * anterior ; ///< Puntero a la celda anterior en la lista.
+    /**
+     * @brief Constructor por defecto 
+     */
+  Celda() : siguiente(0){} 
+
+    /**
+     * @brief Constructor con parámetros.
+     * @param elem Elemento de información.
+     * @param sig Puntero a la celda siguiente.
+     */
+  Celda(const T & elem, Celda * sig) : elemento(elem), siguiente(sig){}  
+  } ;
+
+  Celda * cabecera ; ///< Puntero a la cabecera de la lista (Begin.anterior) 
+
+ public:
+
+  //--------------------- CONSTRUCTORES ---------------------
+
+  /**
+   * @brief Constructor por defecto
+   */ 
+  LIsta() ;
+
+  /**
+   * @brief Constructor de copia 
+   * @param l La lista de la que se hará la copia
+   */
+  Lista(const Lista &l) ;
+
+  // --------------------- DESTRCUTOR -----------------------
+
+  /**
+   * @brief Destructor
+   */
+  ~Lista() ;
+
+  //-------------- OTRAS FUNCIONES ---------------------------
+
+  /**
+   * @brief Inserción de un elemento en una posición
+   * @pram p Posición donde insertar el elemento
+   * @param e Elemento a insertar 
+   */
+  
+  Posicion Insertar(Posicion p, Tbase e) ;
+
+  /**
+   * @brief Eliminar un elemento de la posición dada
+   * @param p Posición en la que eliminar el elemento
+   */
+  Posicion Borrar(Posicion p) ;
+
+  /**
+   * @brief Número de elementos de la Lista
+   */
+  int size() const ;
+
+
+  // ------------- CLASE POSICIÓN (ITERADOR) ------------------------
+  
+  /**
+   * @brief T.D.A posición (implementación de un Iterador) 
+   */
+  class Posicion{
+  private:
+    Celda *punt ;
+  public:
+    /**
+     * @brief constructor de Posicion (por defecto)
+     */
+  Posicion(): punt(0){}
+
+    /**
+     * @brief Operador ++ (aumenta en uno la posición en la lista)
+     */
+    Posicion & operator++(){
+      punt=punt->siguiente ;
+      return *this ;
+    }
+
+    /**
+     * @brief Operador -- (disminuye en uno la posición de la lista)
+     */
+    
+    Posicion &operator--(){
+      punt = punt->anterior ;
+      return *this ;
+    }
+    
+    /**
+     * @brief Operador * (devuelve el elemento de la posición) 
+     */
+    T & operator*(){
+      return punt->elemento ;
+    }
+
+    /**
+     * @brief Operador == (Comprueba si la posición es la misma que otra posición)
+     * @return true si las posiciones son iguales 
+     * @return false si las posiciones son distintas
+     */
+
+    bool operator==(const Posicion &p) const{
+      return punt==p.punt ;
+    }
+
+    /**
+     * @brief Operador != (Compara si la posición es distinta a otra posición
+     * @return true si las posiciones son distintas
+     * @return false si las posiciones son iguales 
+     */
+
+    bool operator !=(const Posicion &p) const{
+      return punt != p.punt ;
+    }
+
+    friend class Lista ;
+  } ;
+
+
+  /**
+   * @brief Devuelve el primer elemento de la lista
+   * @return el primer elemento de la lista.
+   */ 
+  Posicion begin() const{
+    Posicion p ;
+    p.punt = cabecera->siguiente ;
+    return p ;
+  }
+
+  /**
+   * @brief Devuelve la posición siguiente al último elemento de la lista
+   * @return posición del final de la lista
+   */
+
+  Posicion end() const{
+    Posicion p ;
+    p.punt = cabecera ;
+    return p ;
+  }
+    
+
+  
+
+  

@@ -1,0 +1,9 @@
+ void Inicializar_mejor(){
+    for(int i = 0 ; i < total_utilizados ; i++)
+      v[i] = i ;
+  }
+
+   void Inicializar_peor(){
+    for(int i = 0 ; i < total_utilizados ; i++)
+      v[i] = total_utilizados - i ;
+  } 
